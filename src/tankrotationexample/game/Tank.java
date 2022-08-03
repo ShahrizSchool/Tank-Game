@@ -1,74 +1,131 @@
 package tankrotationexample.game;
 
+import tankrotationexample.Animation;
 import tankrotationexample.GameConstants;
+import tankrotationexample.Resources;
+import tankrotationexample.Sound;
+
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
- * @author anthony-pc
+ * @author Shahriz Malek
  */
-public class Tank{
+public class Tank extends GameObject{
 
-    private float x;
-    private float y;
     private float vx;
     private float vy;
     private float angle;
+    int health = 100;
+    int shield = 30;
+    int lives = 3;
+    int lowLife = 1;
+    boolean alive = true;
 
     private float R = 5;
     private float ROTATIONSPEED = 3.0f;
-
-    private BufferedImage img;
+    float bulletDelay = 120;
+    float coolDown = 0f;
+    float rateOfBullet = 1f;
     private boolean UpPressed;
     private boolean DownPressed;
     private boolean RightPressed;
     private boolean LeftPressed;
+    private boolean shootPressed;
+    private boolean state = true;
+    private float screen_x;
+    private float screen_y;
+
+    List<Bullet> ammo = new ArrayList<>();
+    List<Animation> ba = new ArrayList<>();
+    Bullet b;
 
     Tank(float x, float y, float vx, float vy, float angle, BufferedImage img) {
-        this.x = x;
-        this.y = y;
+        super(x, y, img);
         this.vx = vx;
         this.vy = vy;
-        this.img = img;
         this.angle = angle;
+//        this.health = (new Random()).nextInt(100);
+//        this.lives = (new Random()).nextInt(this.lowLife, 3);
+    }
+
+    public float giveSpeed(float speed){
+        speed = R;
+        return speed;
+    }
+
+    public int addShield(int shield){
+        this.shield += shield;
+        return shield;
+    }
+
+    public int addHealth(int hp){
+        int remaining = health - hp;
+        if(this.health == 100){
+            return health;
+        }
+        else{
+            this.health = remaining;
+            return remaining;
+        }
+    }
+
+
+
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
+    public float getX() {
+        return x;
+    }
+
+    public float getY() {
+        return y;
+    }
+
+    void setPosition(float x, float y){
+        this.x = x;
+        this.y = y;
+        this.hitbox.setLocation((int)x, (int)y); // hitbox moves as tank moves
     }
 
     void setX(float x){ this.x = x; }
-
     void setY(float y) { this. y = y;}
 
     void toggleUpPressed() {
         this.UpPressed = true;
     }
-
     void toggleDownPressed() {
         this.DownPressed = true;
     }
-
     void toggleRightPressed() {
         this.RightPressed = true;
     }
-
     void toggleLeftPressed() {
         this.LeftPressed = true;
     }
-
     void unToggleUpPressed() {
         this.UpPressed = false;
     }
-
     void unToggleDownPressed() {
         this.DownPressed = false;
     }
-
     void unToggleRightPressed() {
         this.RightPressed = false;
     }
-
     void unToggleLeftPressed() {
         this.LeftPressed = false;
+    }
+    void toggleShootPressed(){
+        this.shootPressed = true;
+    }
+    void unToggleShootPressed(){
+        this.shootPressed = false;
     }
 
     void update() {
@@ -88,9 +145,45 @@ public class Tank{
             this.rotateRight();
         }
 
+        if(this.shootPressed && this.coolDown >= this.bulletDelay){
+            this.coolDown = 0;
+            (new Sound(Resources.getSound("bullet"))).playSound();
+            //this is to charge up the bullet and make it do more dmg the more it charges
+            b = new Bullet(this.setBulletStartX(), this.setBulletStartY(), angle, Resources.getImage("Shell"));
+            ammo.add(b);
+            animLoader();
+
+        }
+        this.coolDown += this.rateOfBullet;
+//        if (b != null){
+//            b.update();
+//        }
+        bulletRemover();
+
+        this.ba.removeIf(a -> !a.isRunning()); //if animation is not running take it out
+        center_screen();
 
     }
+    public void center_screen(){
+        this.screen_x = (int) this.getX() - GameConstants.WORLD_WIDTH / 4;
+        this.screen_y = (int) this.getY() - GameConstants.WORLD_HEIGHT / 2;
 
+        if(this.screen_x < 0) {
+            this.screen_x = 0;
+        }
+        if(this.screen_y < 0){
+            this.screen_y =0;
+        }
+        //keeps camera still at right border
+        if(screen_x > GameConstants.WORLD_WIDTH - GameConstants.WORLD_WIDTH / 2){
+            screen_x = GameConstants.WORLD_WIDTH - GameConstants.WORLD_WIDTH  / 2;
+        }
+
+        //keeps camera still at bottom border
+        if(screen_y > GameConstants.WORLD_HEIGHT - GameConstants.WORLD_HEIGHT){
+            screen_y = GameConstants.WORLD_HEIGHT - GameConstants.GAME_SCREEN_HEIGHT;
+        }
+    }
     private void rotateLeft() {
         this.angle -= this.ROTATIONSPEED;
     }
@@ -99,12 +192,23 @@ public class Tank{
         this.angle += this.ROTATIONSPEED;
     }
 
+    private int setBulletStartX() {
+        float cx = 29f * (float)Math.cos(Math.toRadians(angle));
+        return (int) x + this.img.getWidth()/2 + (int)cx - 4;
+    }
+
+    private int setBulletStartY() {
+        float cy = 29f* (float)Math.sin(Math.toRadians(angle));
+        return (int) y + this.img.getHeight()/2 + (int)cy - 4;
+    }
+
     private void moveBackwards() {
         vx =  Math.round(R * Math.cos(Math.toRadians(angle)));
         vy =  Math.round(R * Math.sin(Math.toRadians(angle)));
         x -= vx;
         y -= vy;
-       checkBorder();
+        checkBorder();
+        this.hitbox.setLocation((int)x, (int)y);
     }
 
     private void moveForwards() {
@@ -113,21 +217,20 @@ public class Tank{
         x += vx;
         y += vy;
         checkBorder();
+        this.hitbox.setLocation((int)x, (int)y);
     }
-
-
     private void checkBorder() {
         if (x < 30) {
             x = 30;
         }
-        if (x >= GameConstants.GAME_SCREEN_WIDTH - 88) {
-            x = GameConstants.GAME_SCREEN_WIDTH - 88;
+        if (x >= GameConstants.WORLD_HEIGHT - 88) {
+            x = GameConstants.WORLD_WIDTH - 88;
         }
         if (y < 40) {
             y = 40;
         }
-        if (y >= GameConstants.GAME_SCREEN_HEIGHT - 80) {
-            y = GameConstants.GAME_SCREEN_HEIGHT - 80;
+        if (y >= GameConstants.WORLD_WIDTH - 80) {
+            y = GameConstants.WORLD_HEIGHT - 80;
         }
     }
 
@@ -135,16 +238,121 @@ public class Tank{
     public String toString() {
         return "x=" + x + ", y=" + y + ", angle=" + angle;
     }
-
-
-    void drawImage(Graphics g) {
+    @Override
+    void drawImage(Graphics2D g) {
         AffineTransform rotation = AffineTransform.getTranslateInstance(x, y);
         rotation.rotate(Math.toRadians(angle), this.img.getWidth() / 2.0, this.img.getHeight() / 2.0);
         Graphics2D g2d = (Graphics2D) g;
-        g2d.drawImage(this.img, rotation, null);
-        g2d.setColor(Color.RED);
-        //g2d.rotate(Math.toRadians(angle), bounds.x + bounds.width/2, bounds.y + bounds.height/2);
-        g2d.drawRect((int)x,(int)y,this.img.getWidth(), this.img.getHeight());
+        if(b != null){
+            b.drawImage(g2d);
+        }
 
+        //tank hitbox and ammo stuff
+        for (int i = 0; i < ammo.size(); i++) {
+            b.drawImage(g2d);
+        }
+        g2d.drawImage(this.img, rotation, null);
+        //g2d.rotate(Math.toRadians(angle), bounds.x + bounds.width/2, bounds.y + bounds.height/2);
+        g2d.drawRect((int)x,(int)y,this.img.getWidth(), this.img.getHeight()); //draw the rect/hitbox around tank
+
+        //Animation
+        this.ba.forEach(a -> a.drawImage(g2d));
+        //health bar
+        drawHealthBar(g2d);
+        //lives
+        drawLives(g2d);
+    }
+
+    void animLoader(){
+        Animation a = new Animation(setBulletStartX() - 28, setBulletStartY() - 28, Resources.getAnimation("nuke"));
+        a.start();
+        ba.add(a);
+    }
+
+    void bulletRemover(){
+        for (int i = 0; i < ammo.size(); i++) {
+            Bullet b = ammo.get(i);
+            if(!b.isAlive()) {
+                ammo.remove(b);
+            }
+        }
+    }
+
+
+
+    void drawLives(Graphics2D g2d){
+        g2d.setColor(Color.MAGENTA);
+        for(int i=0; i < this.lives; i++){
+            g2d.drawOval((int)x + (i*20),(int)y + 55, 15, 15);
+            g2d.fillOval((int)x + (i*20),(int)y + 55, 15, 15);
+        }
+    }
+
+    void drawHealthBar(Graphics2D g2d){
+        g2d.setColor(Color.WHITE);
+        g2d.drawRect((int)x,(int)y - 30, 100, 25);
+
+        if(this.health >= 70) {
+            g2d.setColor(Color.GREEN);
+        } else if (this.health >= 50) {
+            g2d.setColor(Color.YELLOW);
+        } else{
+            g2d.setColor(Color.RED);
+        }
+        g2d.fillRect((int)x,(int)y - 30, health, 25);
+    }
+
+    private void removeHealth(int hp){
+        if(health - hp <0){
+            health = 0;
+        }
+        else{
+            health -= hp;
+        }
+    }
+
+    int getHealth(){
+        return this.health;
+    }
+
+    @Override
+    public Rectangle getHitBox() {
+        return hitbox.getBounds();
+    }
+    @Override
+    public void handleCollision(Collidable with) {
+
+        if(with instanceof Bullet){ //tank collides with bullet
+            with.handleCollision(this);
+        }
+        if(with instanceof Tank){ //if both tanks collide with each other
+            if(this.UpPressed){
+                y -= vy;
+                x -= vx;
+            }
+            if(this.DownPressed){
+                y -= vy;
+                x -= vx;
+            }
+        }
+        if(with instanceof Wall){ //if tank hits wall
+            if(this.UpPressed){
+                y -= vy;
+                x -= vx;
+            }
+            if(this.DownPressed){
+                y -= vy;
+                x -= vx;
+            }
+        }
+
+        if(with instanceof Powerup){
+            with.handleCollision(this);
+        }
+    }
+
+    @Override
+    public boolean isCollidable() {
+        return false;
     }
 }
