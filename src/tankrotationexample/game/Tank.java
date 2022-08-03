@@ -10,6 +10,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  *
@@ -20,14 +21,10 @@ public class Tank extends GameObject{
     private float vx;
     private float vy;
     private float angle;
-    int health = 50;
+    int health = 10;
     int shield = 30;
     int lives = 3;
-    int lowLife = 1;
-    boolean alive = true;
-
     private float R = 5;
-    private float speedDur = 10;
     private float ROTATIONSPEED = 3.0f;
     float bulletDelay = 120;
     float coolDown = 0f;
@@ -54,10 +51,11 @@ public class Tank extends GameObject{
 //        this.lives = (new Random()).nextInt(this.lowLife, 3);
     }
 
-    public float giveSpeed(float speed){
-        this.R = speed;
-        speed =  speed * 2;
+    public float giveSpeed(){
+        float speed = 0;
+        speed =  this.R + 10;
         System.out.println(speed);
+        System.out.println("----");
         return speed;
     }
 
@@ -67,22 +65,17 @@ public class Tank extends GameObject{
         return shield;
     }
 
-    public int addHealth(int hp){
-        System.out.println(this.health);
-        hp = this.health;
+    public void addHealth(int hp){
         int maxHp = 100;
-
-        if(hp >= maxHp){
-            setHealth(100);
-            System.out.println("Max health is " + hp);
-        }else {
-            int temp = hp;
-            hp = Math.min(this.health + hp, 100);
-            setHealth(hp);
-            System.out.println(temp + " health has been added to your health");
+        if(hp + this.health >= maxHp){
+            this.health = maxHp;
+            System.out.println("Max health is " + maxHp);
+        } else {
+            this.health += hp;
+            System.out.println(hp + " health has been added to your health " + this.health);
         }
-        return hp;
     }
+
 
     private void removeHealth(int hp){
         health--;

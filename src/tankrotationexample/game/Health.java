@@ -12,6 +12,7 @@ public class Health extends Powerup{
     public void handleCollision(Collidable with) {
         if(with instanceof Tank){
             ((Tank) with).addHealth(40);
+            alive = false;
         }
     }
 }

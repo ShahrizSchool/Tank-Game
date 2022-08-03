@@ -11,6 +11,7 @@ public class Life extends Powerup{
     public void handleCollision(Collidable with) {
         if(with instanceof Tank){
             ((Tank) with).gainLife(1);
+            alive = false;
         }
     }
 }

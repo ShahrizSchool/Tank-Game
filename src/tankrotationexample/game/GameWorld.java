@@ -34,6 +34,7 @@ public class GameWorld extends JPanel implements Runnable {
 
     private Tank t1, t2;
     private Launcher lf;
+    private boolean alive;
     private long tick = 0;
     List<GameObject> Objs = new ArrayList<>();
 
@@ -238,12 +239,6 @@ public class GameWorld extends JPanel implements Runnable {
 
     public void collisions() { //collision method
 
-//        for(int i = 0; i< Objs.size(); i++){
-//            GameObject  wall = this.
-//        }
-
-
-
         for (int i = 0; i < Objs.size(); i++) {
             GameObject wall = this.Objs.get(i);
             GameObject pw = this.Objs.get(i);
@@ -273,32 +268,15 @@ public class GameWorld extends JPanel implements Runnable {
                 }
             }
 
+            if(pw instanceof Powerup){
+                if(!((Powerup)pw).isAlive()){
+                    Objs.remove(pw);
+                }
+            }
 
         }
 
 
-        //tanks collide with PowerUps
-//        for (int i = 0; i < Objs.size(); i++) {
-//            GameObject pw = this.Objs.get(i);
-//            if(pw.getHitbox().intersects(this.t1.getHitbox())){
-//                System.out.println("tank one has collided with a powerup. ");
-//            }
-//            if(pw.getHitbox().intersects(this.t2.getHitbox())){
-//                System.out.println("tank two has collided with a powerup. ");
-//            }
-//        }
-
-        //bullets collide with walls
-
-//        for (int i = 0; i < .size(); i++) {
-//            Powerup pw = this.powerUps.get(i);
-//            if(pw.getHitbox().intersects(this.t1.getHitbox())){
-//                System.out.println("tank one has collided with a powerup. ");
-//            }
-//            if(pw.getHitbox().intersects(this.t2.getHitbox())){
-//                System.out.println("tank two has collided with a powerup. ");
-//            }
-//        }
     }
 
 }

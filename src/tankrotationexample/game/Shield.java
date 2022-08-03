@@ -11,6 +11,7 @@ public class Shield extends Powerup{
     public void handleCollision(Collidable with) {
         if(with instanceof Tank){
             ((Tank) with).addShield(30);
+            alive = false;
         }
     }
 }

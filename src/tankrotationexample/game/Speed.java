@@ -10,7 +10,8 @@ public class Speed extends Powerup{
 
     public void handleCollision(Collidable with) {
         if(with instanceof Tank){
-            ((Tank) with).giveSpeed(10);
+            ((Tank) with).giveSpeed();
+            alive = false;
         }
     }
 }
