@@ -156,6 +156,10 @@ public class GameWorld extends JPanel implements Runnable {
                             Speed sp = new Speed(i * 30, j * 30, Resources.getImage("speed"));
                             this.Objs.add(sp);
                         }
+                        case "1" -> {
+                            Life l = new Life(i*30, j*30, Resources.getImage("speed"));
+                            this.Objs.add(l);
+                        }
                     }
                 }
             }
@@ -185,6 +189,7 @@ public class GameWorld extends JPanel implements Runnable {
 
         //miniMap
         drawMiniMap(g2, world);
+
 
     }
 

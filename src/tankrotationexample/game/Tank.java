@@ -20,13 +20,14 @@ public class Tank extends GameObject{
     private float vx;
     private float vy;
     private float angle;
-    int health = 100;
+    int health = 50;
     int shield = 30;
     int lives = 3;
     int lowLife = 1;
     boolean alive = true;
 
     private float R = 5;
+    private float speedDur = 10;
     private float ROTATIONSPEED = 3.0f;
     float bulletDelay = 120;
     float coolDown = 0f;
@@ -54,27 +55,39 @@ public class Tank extends GameObject{
     }
 
     public float giveSpeed(float speed){
-        speed = R;
+        this.R = speed;
+        speed =  speed * 2;
+        System.out.println(speed);
         return speed;
     }
 
     public int addShield(int shield){
-        this.shield += shield;
+        shield = this.shield + shield;
+        System.out.println(shield);
         return shield;
     }
 
     public int addHealth(int hp){
-        int remaining = health - hp;
-        if(this.health == 100){
-            return health;
+        System.out.println(this.health);
+        this.health = hp;
+        int maxHp = 100;
+
+        if(hp >= maxHp){
+            setHealth(100);
+            System.out.println("Max health is 100," + hp);
+        }else {
+            hp = Math.min(this.health + hp, 100);
+            setHealth(hp);
+            System.out.println(this.health + " health has been added to your health, " + hp);
         }
-        else{
-            this.health = remaining;
-            return remaining;
-        }
+        return hp;
     }
 
-
+    public void gainLife(int life){
+        this.lives = life;
+        life++;
+        System.out.println(lives);
+    }
 
     public void setHealth(int health) {
         this.health = health;
@@ -162,6 +175,7 @@ public class Tank extends GameObject{
 
         this.ba.removeIf(a -> !a.isRunning()); //if animation is not running take it out
         center_screen();
+
 
     }
     public void center_screen(){
@@ -261,6 +275,8 @@ public class Tank extends GameObject{
         drawHealthBar(g2d);
         //lives
         drawLives(g2d);
+        //draw shield bar
+        //drawShieldbar(g2d);
     }
 
     void animLoader(){
@@ -277,8 +293,6 @@ public class Tank extends GameObject{
             }
         }
     }
-
-
 
     void drawLives(Graphics2D g2d){
         g2d.setColor(Color.MAGENTA);
@@ -302,13 +316,16 @@ public class Tank extends GameObject{
         g2d.fillRect((int)x,(int)y - 30, health, 25);
     }
 
+    void drawShieldbar(Graphics2D g2d){
+        g2d.setColor(Color.WHITE);
+        g2d.drawRect((int)x,(int)y + 45, 100, 10);
+
+        g2d.setColor(Color.BLUE);
+        g2d.fillRect((int)x,(int)y + 45, shield, 10);
+    }
+
     private void removeHealth(int hp){
-        if(health - hp <0){
-            health = 0;
-        }
-        else{
-            health -= hp;
-        }
+        health--;
     }
 
     int getHealth(){
@@ -346,7 +363,7 @@ public class Tank extends GameObject{
             }
         }
 
-        if(with instanceof Powerup){
+        if(with instanceof Powerup){ // if tank hits a powerup
             with.handleCollision(this);
         }
     }

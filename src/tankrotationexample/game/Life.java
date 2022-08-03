@@ -2,16 +2,15 @@ package tankrotationexample.game;
 
 import java.awt.image.BufferedImage;
 
-public class Health extends Powerup{
+public class Life extends Powerup{
 
-    public Health(float x, float y, BufferedImage img) {
+    public Life(float x, float y, BufferedImage img) {
         super(x, y, img);
     }
 
-    @Override
     public void handleCollision(Collidable with) {
         if(with instanceof Tank){
-            ((Tank) with).addHealth(40);
+            ((Tank) with).gainLife(1);
         }
     }
 }
