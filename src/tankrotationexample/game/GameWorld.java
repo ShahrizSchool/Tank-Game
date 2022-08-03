@@ -190,7 +190,6 @@ public class GameWorld extends JPanel implements Runnable {
         //miniMap
         drawMiniMap(g2, world);
 
-
     }
 
     void drawObjects(Graphics2D buffer) {

@@ -69,28 +69,37 @@ public class Tank extends GameObject{
 
     public int addHealth(int hp){
         System.out.println(this.health);
-        this.health = hp;
+        hp = this.health;
         int maxHp = 100;
 
         if(hp >= maxHp){
             setHealth(100);
-            System.out.println("Max health is 100," + hp);
+            System.out.println("Max health is " + hp);
         }else {
+            int temp = hp;
             hp = Math.min(this.health + hp, 100);
             setHealth(hp);
-            System.out.println(this.health + " health has been added to your health, " + hp);
+            System.out.println(temp + " health has been added to your health");
         }
         return hp;
+    }
+
+    private void removeHealth(int hp){
+        health--;
+    }
+
+    int getHealth(){
+        return this.health;
+    }
+
+    public void setHealth(int health) {
+        this.health = health;
     }
 
     public void gainLife(int life){
         this.lives = life;
         life++;
         System.out.println(lives);
-    }
-
-    public void setHealth(int health) {
-        this.health = health;
     }
 
     public float getX() {
@@ -322,14 +331,6 @@ public class Tank extends GameObject{
 
         g2d.setColor(Color.BLUE);
         g2d.fillRect((int)x,(int)y + 45, shield, 10);
-    }
-
-    private void removeHealth(int hp){
-        health--;
-    }
-
-    int getHealth(){
-        return this.health;
     }
 
     @Override
