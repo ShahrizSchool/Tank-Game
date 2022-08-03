@@ -225,8 +225,8 @@ public class GameWorld extends JPanel implements Runnable {
     }
 
     void drawBackGround(Graphics2D buffer) {
-        for (int i = 0; i < GameConstants.WORLD_HEIGHT; i += 320) {
-            for (int j = 0; j < GameConstants.WORLD_HEIGHT; j += 240) {
+        for (int i = 0; i <= GameConstants.WORLD_WIDTH; i += 320) {
+            for (int j = 0; j <= GameConstants.WORLD_HEIGHT; j += 240) {
                 buffer.drawImage(Resources.getImage("background"), i, j, null);
             }
         }
