@@ -120,8 +120,6 @@ public class GameWorld extends JPanel implements Runnable {
                      = new BufferedReader(new InputStreamReader(GameWorld.class.getClassLoader().getResourceAsStream("maps/map1.txt")))) {
 
             String[] size = mapReader.readLine().split(",");
-//            int numberOfRows = Integer.parseInt(size[0]);
-//            int numberOfColumns = Integer.parseInt(size[1]);
 
             for (int i = 0; mapReader.ready(); i++) {
                 String[] items = mapReader.readLine().split("");

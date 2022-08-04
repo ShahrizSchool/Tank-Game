@@ -69,7 +69,7 @@ public class Launcher {
         this.setFrame("start"); // set the current panel to start panel
     }
 
-    public void setFrame(String type){
+    public void setFrame(String type) {
         this.jf.setVisible(false); // hide the JFrame
         switch(type){
             case "start":

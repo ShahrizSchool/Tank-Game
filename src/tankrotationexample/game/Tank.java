@@ -247,7 +247,6 @@ public class Tank extends GameObject{
         }
     }
 
-
     public int getDamage() {
         return damage;
     }
@@ -315,13 +314,15 @@ public class Tank extends GameObject{
     }
 
     public void setHealth(int health) {
-        this.health = health;
+        this.health -= health;
     }
 
     public void gainLife(int life){
-        this.lives = life;
-        life++;
-        System.out.println(lives);
+        this.lives = this.lives + life;
+    }
+
+    void takeDmg(){
+
     }
 
     @Override

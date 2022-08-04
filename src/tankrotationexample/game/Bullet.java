@@ -43,7 +43,11 @@ public class Bullet extends GameObject{
     }
 
     public int getBulletDmg() {
-        return bulletDmg;
+        return  bulletDmg;
+    }
+
+    void takeDmg(Collidable with){
+        ((Tank) with).setHealth(this.getBulletDmg());
     }
 
 
