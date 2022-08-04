@@ -31,10 +31,8 @@ import java.util.Objects;
 public class GameWorld extends JPanel implements Runnable {
 
     private BufferedImage world;
-
     private Tank t1, t2;
     private Launcher lf;
-    private boolean alive;
     private long tick = 0;
     List<GameObject> Objs = new ArrayList<>();
 
@@ -86,7 +84,6 @@ public class GameWorld extends JPanel implements Runnable {
             System.out.println(ignored);
         }
     }
-
     /**
      * Reset game to its initial state.
      */
@@ -98,7 +95,6 @@ public class GameWorld extends JPanel implements Runnable {
         this.t2.setX(400);
         this.t2.setY(400);
     }
-
     /**
      * Load all resources for Tank Wars Game. Set all Game Objects to their
      * initial state as well.
@@ -265,10 +261,6 @@ public class GameWorld extends JPanel implements Runnable {
                     Objs.remove(obj);
                 }
             }
-
         }
-
-
     }
-
 }

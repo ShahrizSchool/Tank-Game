@@ -93,13 +93,12 @@ public class Bullet extends GameObject{
         return hitbox.getBounds();
     }
 
-
-
     @Override
     public void handleCollision(Collidable with) {
         if(with instanceof Wall){
             if(with instanceof Breakable){
                 with.handleCollision(this);
+                ((Wall) with).getHitbox().getBounds();
             }
             this.alive = !isCollidable();
 

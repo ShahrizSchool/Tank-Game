@@ -35,7 +35,6 @@ public class Tank extends GameObject{
     private boolean RightPressed;
     private boolean LeftPressed;
     private boolean shootPressed;
-    private boolean state = true;
     private float screen_x;
     private float screen_y;
 
@@ -50,50 +49,6 @@ public class Tank extends GameObject{
         this.angle = angle;
 //        this.health = (new Random()).nextInt(100);
 //        this.lives = (new Random()).nextInt(this.lowLife, 3);
-    }
-
-    public float giveSpeed(){
-        float speed = 0;
-        speed =  this.R + 10;
-        System.out.println(speed);
-        System.out.println("----");
-        return speed;
-    }
-
-    public int addShield(int shield){
-        shield = this.shield + shield;
-        System.out.println(shield);
-        return shield;
-    }
-
-    public void addHealth(int hp){
-        int maxHp = 100;
-        if(hp + this.health >= maxHp){
-            this.health = maxHp;
-            System.out.println("Max health is " + maxHp);
-        } else {
-            this.health += hp;
-            System.out.println(hp + " health has been added to your health " + this.health);
-        }
-    }
-
-
-    private void removeHealth(int hp){
-        health--;
-    }
-
-    int getHealth(){
-        return this.health;
-    }
-
-    public void setHealth(int health) {
-        this.health = health;
-    }
-
-    public void gainLife(int life){
-        this.lives = life;
-        life++;
-        System.out.println(lives);
     }
 
     public float getX() {
@@ -201,21 +156,17 @@ public class Tank extends GameObject{
     private void rotateLeft() {
         this.angle -= this.ROTATIONSPEED;
     }
-
     private void rotateRight() {
         this.angle += this.ROTATIONSPEED;
     }
-
     private int setBulletStartX() {
         float cx = 29f * (float)Math.cos(Math.toRadians(angle));
         return (int) x + this.img.getWidth()/2 + (int)cx - 4;
     }
-
     private int setBulletStartY() {
         float cy = 29f* (float)Math.sin(Math.toRadians(angle));
         return (int) y + this.img.getHeight()/2 + (int)cy - 4;
     }
-
     private void moveBackwards() {
         vx =  Math.round(R * Math.cos(Math.toRadians(angle)));
         vy =  Math.round(R * Math.sin(Math.toRadians(angle)));
@@ -224,7 +175,6 @@ public class Tank extends GameObject{
         checkBorder();
         this.hitbox.setLocation((int)x, (int)y);
     }
-
     private void moveForwards() {
         vx = Math.round(R * Math.cos(Math.toRadians(angle)));
         vy = Math.round(R * Math.sin(Math.toRadians(angle)));
@@ -297,9 +247,13 @@ public class Tank extends GameObject{
         }
     }
 
-    void takeDmg(){
-        //Bullet b = ammo.get();
 
+    public int getDamage() {
+        return damage;
+    }
+
+    public void setDamage(int damage) {
+        this.damage = damage;
     }
 
     void drawLives(Graphics2D g2d){
@@ -309,7 +263,6 @@ public class Tank extends GameObject{
             g2d.fillOval((int)x + (i*20),(int)y + 55, 15, 15);
         }
     }
-
     void drawHealthBar(Graphics2D g2d){
         g2d.setColor(Color.WHITE);
         g2d.drawRect((int)x,(int)y - 30, 100, 25);
@@ -323,13 +276,52 @@ public class Tank extends GameObject{
         }
         g2d.fillRect((int)x,(int)y - 30, health, 25);
     }
-
     void drawShieldbar(Graphics2D g2d){
         g2d.setColor(Color.WHITE);
         g2d.drawRect((int)x,(int)y + 45, 100, 10);
 
         g2d.setColor(Color.BLUE);
         g2d.fillRect((int)x,(int)y + 45, shield, 10);
+    }
+
+    public float giveSpeed(){
+        float speed = 0;
+        speed =  this.R * 2;
+        return speed;
+    }
+
+    public int addShield(int shield){
+        shield = this.shield + shield;
+        System.out.println(shield);
+        return shield;
+    }
+
+    public void addHealth(int hp){
+        int maxHp = 100;
+        if(hp + this.health >= maxHp){
+            this.health = maxHp;
+            System.out.println("Max health is " + maxHp);
+        } else {
+            this.health += hp;
+            System.out.println(hp + " health has been added to your health " + this.health);
+        }
+    }
+    private void removeHealth(int hp){
+        ammo.get(hp).getBulletDmg();
+    }
+
+    int getHealth(){
+        return this.health;
+    }
+
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
+    public void gainLife(int life){
+        this.lives = life;
+        life++;
+        System.out.println(lives);
     }
 
     @Override
@@ -358,8 +350,8 @@ public class Tank extends GameObject{
                 x -= vx;
             }
             if(this.DownPressed){
-                y -= vy;
-                x -= vx;
+                y += vy;
+                x += vx;
             }
         }
 

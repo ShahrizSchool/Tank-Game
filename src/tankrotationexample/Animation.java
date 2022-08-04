@@ -30,10 +30,8 @@ public class Animation extends Thread{
     }
 
     public void run(){
-        this.isRunning = true;
         try{
             while(isRunning){
-                System.out.println("print");
                 this.currentFrame = (this.currentFrame + 1) % this.frames.size();
                 if(currentFrame == this.frames.size() -1){
                     this.isRunning = false;
