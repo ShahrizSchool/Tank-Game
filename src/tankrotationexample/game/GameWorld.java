@@ -152,7 +152,7 @@ public class GameWorld extends JPanel implements Runnable {
                             this.Objs.add(sp);
                         }
                         case "1" -> {
-                            Life l = new Life(i*30, j*30, Resources.getImage("speed"));
+                            Life l = new Life(i*30, j*30, Resources.getImage("life"));
                             this.Objs.add(l);
                         }
                     }

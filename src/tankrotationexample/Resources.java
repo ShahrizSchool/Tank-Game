@@ -44,6 +44,7 @@ public class Resources {
             Resources.images.put("health", ImageIO.read(GameWorld.class.getClassLoader().getResource("powerups/health.png")));
             Resources.images.put("shield", ImageIO.read(GameWorld.class.getClassLoader().getResource("powerups/shield.png")));
             Resources.images.put("speed", ImageIO.read(GameWorld.class.getClassLoader().getResource("powerups/speed.png")));
+            Resources.images.put("life", ImageIO.read(GameWorld.class.getClassLoader().getResource("powerups/life.png")));
 
             //bullet
             Resources.images.put("Shell", ImageIO.read(GameWorld.class.getClassLoader().getResource("bullet/Shell.gif")));

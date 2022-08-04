@@ -218,9 +218,9 @@ public class Tank extends GameObject{
         g2d.drawRect((int)x,(int)y,this.img.getWidth(), this.img.getHeight()); //draw the rect/hitbox around tank
 
         //Animation
-        for (int i = 0; i < this.ba.size() ; i++) {
-            this.ba.get(i).drawImage(g2d);
-        }
+//        for (int i = 0; i < this.ba.size() ; i++) {
+//            this.ba.get(i).drawImage(g2d);
+//        }
         //health bar
         drawHealthBar(g2d);
         //lives

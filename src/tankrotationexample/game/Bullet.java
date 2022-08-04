@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Bullet extends GameObject{
-
     private float angle;
     float scaleFactor = 1f;
     private float R = 5f;
