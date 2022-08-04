@@ -21,8 +21,8 @@ public class Tank extends GameObject{
     private float vx;
     private float vy;
     private float angle;
-    int health = 10;
-    int shield = 30;
+    int health = 60;
+    int shield = 0;
     int damage = 20;
     int lives = 3;
     private float R = 5;
@@ -207,9 +207,7 @@ public class Tank extends GameObject{
         AffineTransform rotation = AffineTransform.getTranslateInstance(x, y);
         rotation.rotate(Math.toRadians(angle), this.img.getWidth() / 2.0, this.img.getHeight() / 2.0);
         Graphics2D g2d = (Graphics2D) g;
-//        if(b != null){
-//            b.drawImage(g2d);
-//        }
+
 
         //tank hitbox and ammo stuff
         for (int i = 0; i < ammo.size(); i++) {
@@ -220,7 +218,6 @@ public class Tank extends GameObject{
         g2d.drawRect((int)x,(int)y,this.img.getWidth(), this.img.getHeight()); //draw the rect/hitbox around tank
 
         //Animation
-
         for (int i = 0; i < this.ba.size() ; i++) {
             this.ba.get(i).drawImage(g2d);
         }
@@ -229,7 +226,7 @@ public class Tank extends GameObject{
         //lives
         drawLives(g2d);
         //draw shield bar
-        //drawShieldbar(g2d);
+        drawShieldbar(g2d);
     }
 
     void animLoader(){
@@ -284,14 +281,13 @@ public class Tank extends GameObject{
     }
 
     public float giveSpeed(){
-        float speed = 0;
-        speed =  this.R * 2;
-        return speed;
+        this.R =  this.R * 2;
+        System.out.println(this.R);
+        return this.R;
     }
 
     public int addShield(int shield){
-        shield = this.shield + shield;
-        System.out.println(shield);
+        this.shield = this.shield + shield;
         return shield;
     }
 
@@ -305,25 +301,18 @@ public class Tank extends GameObject{
             System.out.println(hp + " health has been added to your health " + this.health);
         }
     }
-    private void removeHealth(int hp){
-        ammo.get(hp).getBulletDmg();
-    }
-
     int getHealth(){
         return this.health;
     }
 
     public void setHealth(int health) {
-        this.health -= health;
+        this.health = this.health - health;
     }
 
     public void gainLife(int life){
         this.lives = this.lives + life;
     }
 
-    void takeDmg(){
-
-    }
 
     @Override
     public Rectangle getHitBox() {

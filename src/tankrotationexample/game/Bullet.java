@@ -15,7 +15,6 @@ public class Bullet extends GameObject{
     private int bulletDmg = 30;
     private boolean alive = true;
 
-
     Bullet(float x, float y, float angle, BufferedImage img) {
         super(x, y, img);
         this.angle = angle;
@@ -45,11 +44,6 @@ public class Bullet extends GameObject{
     public int getBulletDmg() {
         return  bulletDmg;
     }
-
-    void takeDmg(Collidable with){
-        ((Tank) with).setHealth(this.getBulletDmg());
-    }
-
 
     private void checkBorder() {
         if (x < 30) {
@@ -102,7 +96,7 @@ public class Bullet extends GameObject{
         if(with instanceof Wall){
             if(with instanceof Breakable){
                 with.handleCollision(this);
-                ((Wall) with).getHitbox().getBounds();
+                ((Wall) with).getHitbox();
             }
             this.alive = !isCollidable();
 

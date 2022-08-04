@@ -8,47 +8,31 @@ import java.util.ArrayList;
 
 public class Breakable extends Wall{
 
-    private int life = 2;
-    private boolean deadWall = false;
+    private int health = 100;
+
     public Breakable(float x, float y, BufferedImage img) {
         super(x, y, img);
 
     }
 
     public void setLife(int life) {
-        this.life = life;
+        this.health = life;
     }
 
-    public void removeHealth(int health){
-        if(this.life - health < 0){
-            life = 0;
-            deadWall = true;
+    public void removeWallHealth(int bulletDmg){
+        if(this.health - bulletDmg <= 0){
+            this.health = 0;
+            deadWall = false;
         } else {
-            life -= health;
+            this.health = this.health - bulletDmg;
         }
     }
 
-    boolean isDeadWall(){
-        return deadWall;
-    }
-
-    void setDeadWall(boolean deadWall){
-        this.deadWall = deadWall;
-    }
-
-    void getHealth(){
-
-    }
     @Override
     public void handleCollision(Collidable with) {
-//        if (with instanceof Bullet){
-//            this.takeDamage(((Bullet) with).getDmg());
-//            updateImage();
-//        }
+        if (with instanceof Bullet){
+            this.removeWallHealth(((Bullet) with).getBulletDmg());
+        }
     }
 
-
-    //    public Breakable(int life) {
-//        super(life);
-//    }
 }

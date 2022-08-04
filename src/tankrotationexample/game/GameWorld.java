@@ -131,12 +131,12 @@ public class GameWorld extends JPanel implements Runnable {
                         }
                         case "3" -> {
                             Breakable bw1 = new Breakable(i * 30, j * 30, Resources.getImage("break1"));
-                            bw1.setLife(3);
+                            bw1.setLife(90);
                             Objs.add(bw1);
                         }
                         case "2" -> {
                             Breakable bw2 = new Breakable(i * 30, j * 30, Resources.getImage("break2"));
-                            bw2.setLife(2);
+                            bw2.setLife(60);
                             Objs.add(bw2);
                         }
                         case "6" -> {
@@ -245,17 +245,28 @@ public class GameWorld extends JPanel implements Runnable {
 
             for (int j = 0; j < t1.ammo.size(); j++) {
                 Bullet b = (Bullet) t1.ammo.get(j);
-                if(b.getHitbox().intersects(obj.getHitbox())){
+                if(b.getHitbox().intersects(obj.getHitbox())) {
                     b.handleCollision(obj);
-                }
-                if (b.getHitbox().intersects(obj.getHitbox())) {
-                    obj.handleCollision(b);
                     t1.bulletRemover();
+                }
+            }
+
+            for (int j = 0; j < t2.ammo.size(); j++) {
+                Bullet b = (Bullet) t2.ammo.get(j);
+                if(b.getHitbox().intersects(obj.getHitbox())) {
+                    b.handleCollision(obj);
+                    t2.bulletRemover();
                 }
             }
 
             if(obj instanceof Powerup){
                 if(!((Powerup)obj).isAlive()){
+                    Objs.remove(obj);
+                }
+            }
+
+            if(obj instanceof Breakable){
+                if(!((Breakable)obj).deadWall()){
                     Objs.remove(obj);
                 }
             }
