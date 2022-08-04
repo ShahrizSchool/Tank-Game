@@ -9,8 +9,8 @@ import java.util.List;
 public class Animation extends Thread{
     float x,y;
     int currentFrame = 0;
-    private int delay = 20;
-    private boolean isRunning;
+    private int delay = 45;
+    private boolean isRunning = true;
     List<BufferedImage> frames;
 
     public Animation(float x, float y, List<BufferedImage> frames){

@@ -10,8 +10,8 @@ public class Breakable extends Wall{
 
     private int life = 2;
     private boolean deadWall = false;
-    public Breakable(float y, float x, BufferedImage img) {
-        super(y, x, img);
+    public Breakable(float x, float y, BufferedImage img) {
+        super(x, y, img);
 
     }
 

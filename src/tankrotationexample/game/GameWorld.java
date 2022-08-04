@@ -240,37 +240,29 @@ public class GameWorld extends JPanel implements Runnable {
     public void collisions() { //collision method
 
         for (int i = 0; i < Objs.size(); i++) {
-            GameObject wall = this.Objs.get(i);
-            GameObject pw = this.Objs.get(i);
+            GameObject obj = this.Objs.get(i);
 
-            if (wall.getHitbox().intersects(this.t1.getHitbox())) {
-                t1.handleCollision(wall);
+            if (obj.getHitbox().intersects(this.t1.getHitbox())) {
+                t1.handleCollision(obj);
             }
-            if (wall.getHitbox().intersects(this.t2.getHitbox())) {
-                t2.handleCollision(wall);
-            }
-
-            if (pw.getHitbox().intersects(this.t1.getHitbox())) {
-                t1.handleCollision(pw);
-            }
-            if (pw.getHitbox().intersects(this.t2.getHitbox())) {
-                t2.handleCollision(pw);
+            if (obj.getHitbox().intersects(this.t2.getHitbox())) {
+                t2.handleCollision(obj);
             }
 
             for (int j = 0; j < t1.ammo.size(); j++) {
                 Bullet b = (Bullet) t1.ammo.get(j);
-                if(b.getHitbox().intersects(wall.getHitbox())){
-                    b.handleCollision(wall);
+                if(b.getHitbox().intersects(obj.getHitbox())){
+                    b.handleCollision(obj);
                 }
-                if (b.getHitbox().intersects(wall.getHitbox())) {
-                    wall.handleCollision(b);
-                    //t1.removeBullet(b);
+                if (b.getHitbox().intersects(obj.getHitbox())) {
+                    obj.handleCollision(b);
+                    t1.bulletRemover();
                 }
             }
 
-            if(pw instanceof Powerup){
-                if(!((Powerup)pw).isAlive()){
-                    Objs.remove(pw);
+            if(obj instanceof Powerup){
+                if(!((Powerup)obj).isAlive()){
+                    Objs.remove(obj);
                 }
             }
 

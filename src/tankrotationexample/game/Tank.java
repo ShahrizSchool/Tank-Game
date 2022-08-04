@@ -23,6 +23,7 @@ public class Tank extends GameObject{
     private float angle;
     int health = 10;
     int shield = 30;
+    int damage = 20;
     int lives = 3;
     private float R = 5;
     private float ROTATIONSPEED = 3.0f;
@@ -40,7 +41,7 @@ public class Tank extends GameObject{
 
     List<Bullet> ammo = new ArrayList<>();
     List<Animation> ba = new ArrayList<>();
-    Bullet b;
+    //Bullet b;
 
     Tank(float x, float y, float vx, float vy, float angle, BufferedImage img) {
         super(x, y, img);
@@ -164,15 +165,12 @@ public class Tank extends GameObject{
             this.coolDown = 0;
             (new Sound(Resources.getSound("bullet"))).playSound();
             //this is to charge up the bullet and make it do more dmg the more it charges
-            b = new Bullet(this.setBulletStartX(), this.setBulletStartY(), angle, Resources.getImage("Shell"));
+            Bullet b = new Bullet(this.setBulletStartX(), this.setBulletStartY(), angle, Resources.getImage("Shell"));
             ammo.add(b);
             animLoader();
 
         }
         this.coolDown += this.rateOfBullet;
-//        if (b != null){
-//            b.update();
-//        }
         bulletRemover();
 
         this.ba.removeIf(a -> !a.isRunning()); //if animation is not running take it out
@@ -259,20 +257,23 @@ public class Tank extends GameObject{
         AffineTransform rotation = AffineTransform.getTranslateInstance(x, y);
         rotation.rotate(Math.toRadians(angle), this.img.getWidth() / 2.0, this.img.getHeight() / 2.0);
         Graphics2D g2d = (Graphics2D) g;
-        if(b != null){
-            b.drawImage(g2d);
-        }
+//        if(b != null){
+//            b.drawImage(g2d);
+//        }
 
         //tank hitbox and ammo stuff
         for (int i = 0; i < ammo.size(); i++) {
-            b.drawImage(g2d);
+            this.ammo.get(i).drawImage(g2d);
         }
         g2d.drawImage(this.img, rotation, null);
         //g2d.rotate(Math.toRadians(angle), bounds.x + bounds.width/2, bounds.y + bounds.height/2);
         g2d.drawRect((int)x,(int)y,this.img.getWidth(), this.img.getHeight()); //draw the rect/hitbox around tank
 
         //Animation
-        this.ba.forEach(a -> a.drawImage(g2d));
+
+        for (int i = 0; i < this.ba.size() ; i++) {
+            this.ba.get(i).drawImage(g2d);
+        }
         //health bar
         drawHealthBar(g2d);
         //lives
@@ -294,6 +295,11 @@ public class Tank extends GameObject{
                 ammo.remove(b);
             }
         }
+    }
+
+    void takeDmg(){
+        //Bullet b = ammo.get();
+
     }
 
     void drawLives(Graphics2D g2d){
