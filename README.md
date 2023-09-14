@@ -43,6 +43,6 @@ The jar folder is to be used to store the built jar of your term-project.
 |  Rotate Right | d        | right arrow |
 |  Shoot        | space    | enter       |
 
-<!-- you may add more controls if you need to. --># BMI-Calculator
-# BMI-Calculator
+<!-- you may add more controls if you need to. -->
+
 # Tank-Game
