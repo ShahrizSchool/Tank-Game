@@ -4,7 +4,7 @@
 | Student Information |                      |
 |:-------------------:|----------------------|
 |  Student Name       | Shahriz Malek        |
-|  Student Email      | smalek@sfsu.mail.edu |
+|  Student Email      | ******************** |
 
 ## src Folder Purpose 
 src folder is to be used to store source code only.
@@ -43,4 +43,4 @@ The jar folder is to be used to store the built jar of your term-project.
 |  Rotate Right | d        | right arrow |
 |  Shoot        | space    | enter       |
 
-<!-- you may add more controls if you need to. -->
+<!-- you may add more controls if you need to. --># BMI-Calculator
